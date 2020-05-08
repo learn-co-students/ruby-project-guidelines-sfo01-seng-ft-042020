@@ -21,3 +21,6 @@ In this project, we built a project in which a customer will build a taco throug
 4. Choose 3 toppings, such as sauces. 
 5. Look back and see if the customer wants to change something in taco order
 6.If customer decides not to order, exit the application. 
+
+## Contributions
+Built by Maggie Cooper and Darrick Pang
