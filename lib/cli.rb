@@ -3,7 +3,7 @@ class CommandLine
     
     
     def greet
-        puts "Welcome to the Taco Shop!"
+        puts "Welcome to the Taco Shop! \n\n\n"
         puts "Please enter your name below"
         @name = gets.strip
         @user = User.find_or_create_by(name: @name)
@@ -14,9 +14,9 @@ class CommandLine
         puts "Would you like to place an order?(y/n)"
         choice = gets.strip
         if choice == "y"
-            puts "Great! Please choose a shell"
+            puts "Great! Please choose a shell\n\n\n"
             shells
-            puts "Thank you, now please choose a filling. You may choose up to 2 fillings."
+            puts "Thank you, now please choose a filling. You may choose up to 2 fillings.\n\n\n"
             x = 0
             loop do
                 fillings
@@ -24,7 +24,7 @@ class CommandLine
                 second_choice = gets.strip
                 x += 1
                 if x >= 2 || second_choice == 'n'
-                    puts " Please choose your first topping. You may choose up to 3 toppings."
+                    puts " Please choose your first topping. You may choose up to 3 toppings.\n\n\n"
                     break 
                 end
             end 
@@ -35,7 +35,7 @@ class CommandLine
                 third_choice = gets.strip
                 y += 1
                 if y == 3 || third_choice == 'n'
-                    puts "Thank you here is your taco"
+                    puts "Thank you, here is your taco"
                     puts taco
                     
                     break  
@@ -45,34 +45,34 @@ class CommandLine
             puts "Would you like to make a change to your taco? Please choose 'filling,' 'topping', or 'shell."
             fourth_choice = gets.strip 
             if fourth_choice == "filling"
-                puts "which ingredient would you like to replace?"
+                puts "which ingredient would you like to replace?\n\n\n"
                 taco
                 @old_ingredient = gets.strip
                 # puts "Here is your taco"
                 # taco 
-                puts "please choose a new filling"
+                puts "please choose a new filling\n\n\n"
                 fillings
                 filling_update
-                puts "Here is your taco"
+                puts "Here is your taco. Have a nice day :).\n\n\n"
                 taco
             elsif fourth_choice == "topping"
-                puts "which ingredient would you like to replace?"
+                puts "which ingredient would you like to replace?\n\n\n"
                 taco
                 @old_ingredient = gets.strip
                 # puts "Here is your taco"
                 # taco 
-                puts "please choose a new topping"
+                puts "please choose a new topping\n\n\n"
                 toppings
                 topping_update
                 puts "Here is your taco. Have a nice day :)."
                 taco
             elsif fourth_choice == "shell"
-                puts "which ingredient would you like to replace?"
+                puts "which ingredient would you like to replace?\n\n\n"
                 taco
                 @old_ingredient = gets.strip
                 # puts "Here is your taco"
                 # taco 
-                puts "please choose a new shell"
+                puts "please choose a new shell\n\n\n"
                 shells
                 shell_update
                 puts "Here is your taco. Have a nice day :)"
@@ -90,7 +90,14 @@ class CommandLine
         shells = Ingredient.where(ingredient_type: 'shell')
         shell = shells.map{|ingredients| ingredients.ingredient_name}
         puts shell
-        @shell_choice = gets.strip
+        loop do 
+            @shell_choice = gets.strip.downcase
+            if shell.include?(@shell_choice) == false
+                puts "It looks like you did not enter a valid shell choice. Please try again."
+            else 
+                break 
+            end
+        end
         @taco = Taco.find_or_create_by(user_id: @user.id, order_number: @user.id)
         ingredient = Ingredient.find_by(ingredient_name: @shell_choice)
         taco_ingredient = TacoIngredient.create(taco_id: @taco.id, ingredient_id: ingredient.id)
@@ -101,7 +108,14 @@ class CommandLine
         fillings = Ingredient.where(ingredient_type: 'filling')
         filling = fillings.map{|ingredients| ingredients.ingredient_name}
         puts filling
-        @filling_choice = gets.strip
+        loop do 
+            @filling_choice = gets.strip.downcase
+            if filling.include?(@filling_choice) == false
+                puts "It looks like you did not enter a valid filling choice. Please try again."
+            else 
+                break 
+            end
+        end
         @taco = Taco.find_or_create_by(user_id: @user.id, order_number: @user.id)
         ingredient = Ingredient.find_by(ingredient_name: @filling_choice)
         taco_ingredient = TacoIngredient.create(taco_id: @taco.id, ingredient_id: ingredient.id)
@@ -112,7 +126,14 @@ class CommandLine
         toppings = Ingredient.where(ingredient_type: 'toppings')
         topping = toppings.map{|ingredients| ingredients.ingredient_name}
         puts topping
-        @topping_choice = gets.strip
+        loop do 
+            @topping_choice = gets.strip.downcase
+            if topping.include?(@topping_choice) == false
+                puts "It looks like you did not enter a valid topping choice. Please try again."
+            else 
+                break 
+            end
+        end
         @taco = Taco.find_or_create_by(user_id: @user.id, order_number: @user.id)
         ingredient = Ingredient.find_by(ingredient_name: @topping_choice)
         taco_ingredient = TacoIngredient.create(taco_id: @taco.id, ingredient_id: ingredient.id)
@@ -120,12 +141,9 @@ class CommandLine
     end
     
     def taco 
-        # binding.pry
         taco_ingredients = @taco.ingredients
         ingredient_names = taco_ingredients.map{ |ingredient| ingredient.ingredient_name}
-        
         puts ingredient_names
-        # taco.map{|ingredients| ingredients.ing}
     end
     
     def filling_update
@@ -152,14 +170,9 @@ class CommandLine
 
     def shell_update
         unwanted_ingredient = Ingredient.find_by(ingredient_name: @old_ingredient)
-        puts "Unwanted Ingredient #{unwanted_ingredient}"
         old_taco = TacoIngredient.find_by(taco_id: @taco.id, ingredient_id: unwanted_ingredient.id)
-        puts "Old Taco: #{old_taco}"
         new_ingredient = Ingredient.find_by(ingredient_name: @shell_choice)
-        puts "New Ingredient: #{new_ingredient}"
         taco = TacoIngredient.find_by(taco_id: @taco.id, ingredient_id: new_ingredient.id )
-        puts "Taco: #{taco}"
-        #binding.pry
         old_taco.destroy 
         x = taco.update(ingredient_id: new_ingredient.id)
 
