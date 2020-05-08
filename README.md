@@ -1,11 +1,11 @@
-## Taco Truck 
-Taco TRUCK is a Command Line application written for Ruby that allows users to make virtual tacos. 
+## TacoTruck 
+TacoTruck is a Command Line application written for Ruby that allows users to make virtual tacos. 
 
 ## Getting Started 
 After you git clone this to your computer, you should run rake db:migrate, and rake db:seed in order to populate the taco database. In order to open the application, run "ruby bin/run.rb" in your terminal.
 
 ## Description
-In this project, we built a project in which a customer will build a taco through an app. Taco Truck will will show them their choices for shells, fillings, and toppings. 
+In this project, we built a project in which a customer will build a taco through an app. TacoTruck will will show them their choices for shells, fillings, and toppings. 
 
 ## Process to Build 
 1. A user has many tacos, many ingredients through taco ingredients, and many taco ingredients through tacos
