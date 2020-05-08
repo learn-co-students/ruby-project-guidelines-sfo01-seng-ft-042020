@@ -1,5 +1,5 @@
 class Taco < ActiveRecord::Base
     belongs_to :user
-    belongs_to :ingredient
-
+    has_many :taco_ingredients
+    has_many :ingredients, through: :taco_ingredients 
 end

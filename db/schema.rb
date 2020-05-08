@@ -10,16 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20200505213214) do
+ActiveRecord::Schema.define(version: 20200507163645) do
 
   create_table "ingredients", force: :cascade do |t|
     t.string "ingredient_name"
     t.string "ingredient_type"
   end
 
+  create_table "taco_ingredients", force: :cascade do |t|
+    t.integer "taco_id"
+    t.integer "ingredient_id"
+  end
+
   create_table "tacos", force: :cascade do |t|
     t.integer "user_id"
-    t.integer "ingredient_id"
     t.integer "order_number"
   end
 
