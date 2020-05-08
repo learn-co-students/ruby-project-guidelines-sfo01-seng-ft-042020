@@ -3,7 +3,8 @@
 ## Project Requirements and Installation 
 1. Fork and clone this repository.
 2. We want to have a minimum of three models
-3. Make sure to create a good README.md with a short description, install instructions, a contributors guide and a link to the license for your code.
+3. Don’t forget to use “rake db:migrate” in the terminal.
+
 
 ## Description
 In this project, we built a project in which a customer will build a taco through an app and send it to the restaurant to make. It will show them their choices for shells, fillings, and toppings. 
