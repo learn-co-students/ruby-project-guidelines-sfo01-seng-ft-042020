@@ -1,128 +1,164 @@
 class CommandLineInterface
-
-    def greeting_1
-        puts "🧸----------------------------🧸"
-        puts "| Hello Welcome to Litthe Math |"
-        puts "🧸----------------------------🧸"
-    end
+    attr_reader :prompt, :font
+    $pastel = Pastel.new
     
+    def initialize()
+        @prompt = TTY::Prompt.new(active_color: :green)
+        @font = TTY::Font.new(:straight)
+    end
+
     def greeting
-        puts "\n📗A game designed to teach Basic Math Skills to children at preschool age.📕"
-        puts "➕ ➖ ➕ ➖ ➕ ➖ ➕ ➖ ➕ ➖➕"
-        puts "📕Are you exited to get started?📗"
-        puts "➕ ➖ ➕ ➖ ➕ ➖ ➕ ➖ ➕ ➖➕"
-        puts "\n🐾🐾 First Let's Create an Account For you! 🐾🐾"
+        system "clear"
+        puts
+        puts font.write("HELLO!").blue.blink
+        puts "----------------------------------------".cyan.bold
+        puts "| 🧸 WELCOME TO THE LITTLE MATH LAB 🧸 |".cyan.bold
+        puts "----------------------------------------".cyan.bold
+        puts
+        puts "✏️  A Basic Math Exercise for Children at Preeschool Age ✏️".bold
+        puts
+        puts "Are you exited to get started?\n".blue.on_white.bold
+        prompt.keypress("Press ENTER to continue!".cyan, keys: [:return])
+        check_account
+    end
+
+    def check_account
+        system "clear"
+        puts "First, are you already a part of Little Math Lab community?".cyan.bold
+        prompt.select("Select One Option".underline) do |menu|
+            menu.choice "I've been here before",-> { 
+                puts "Great! What is your username?".blue 
+                username = gets.chomp
+                puts "Welcome back, #{username}!".blue
+                @exist = User.all.find_by(user_name: username)
+            }
+            menu.choice "This is my first time",-> { 
+                puts "Alright, let's Create an Account For you!".bold
+                create_account 
+            }
+        end
+        prompt.keypress("Press ENTER to continue!".underline, keys: [:return])  
+        menu
     end
 
     def create_account
-        puts "What do you want your username to be?"
+        puts "What do you want your username to be?".blue
         user_name = gets.chomp
-        puts "Cool #{user_name}! How old are you?"
+        puts "Nice to meet you, #{user_name}! How old are you?".blue
         age = gets.chomp
-        puts "Awesome! Do you have a favorite animal? What is it?"
+        puts "Awesome! Do you have a favorite animal? What is it?".blue
         favorite_animal = gets.chomp
-        puts "WOW! That's a really cool animal!"
+        puts "WOW! That's a really cool animal!".blue
+        puts "\nNow you are all set!\n".green
+        
+        @exist = User.find_or_create_by(user_name: user_name, age: age, favorite_animal: favorite_animal)
 
-        @user_account = User.find_or_create_by(user_name: user_name, age: age, favorite_animal: favorite_animal)
-
-        puts "Great! Now you are all set to start a game!"
-    end
-
-    def view_account
-        user_name = User.all.map {|user| user.user_name}.last
-        age = User.all.map {|user| user.age}.last
-        favorite_animal = User.all.map {|user| user.favorite_animal}.last
-        puts "Your username is #{user_name}, you are #{age} years old and your favorite animal is #{favorite_animal}."
+        prompt.keypress("Press ENTER to continue!".underline, keys: [:return])  
         menu
     end
 
     def update_account
-        puts "What is your current username?"
-        user_name = gets.chomp
-        puts "What username you want to change to"
-        new_user_name = gets.chomp
-        user = User.find_by(user_name: user_name)
-        user.update(user_name: new_user_name)  
-        puts "You have changed your username to #{new_user_name}"
+        prompt.select("Select One Option".underline) do |menu|
+            menu.choice 'Update My Username', -> {
+                puts "What will your new username be?".blue
+                new_user_name = gets.chomp
+                puts "You have successfully changed your username to #{new_user_name}.".green
+                @exist.update(user_name: new_user_name)
+                my_account
+            }
+            menu.choice 'Update My Age', -> {
+                puts "What is your age?".blue
+                new_age = gets.chomp
+                puts "You are now #{new_age} years old!".green
+                @exist.update(age: new_age)
+                my_account
+            }
+            menu.choice 'Update My Animal', -> {
+                puts "It's alright, people change their mind, what is your new favorite animal now?".blue
+                new_animal = gets.chomp
+                puts "Your new favorite animal is #{new_animal}.".green
+                @exist.update(favorite_animal: new_animal)
+                my_account
+            }
+        end  
+        prompt.keypress("Press ENTER to go back to the main menu".underline, keys: [:return])  
+        menu
+    end
+
+    def view_account
+        puts "Your username is #{@exist.user_name}, you are #{@exist.age} years old, and your favorite animal is #{@exist.favorite_animal}.".blue.bold
+        prompt.keypress("Press ENTER to go back to the main menu".underline, keys: [:return])
         menu
     end
 
     def delete_account
-        user = User.all
-        user.last.destroy
-        puts "Your account has been deleted"
-        quit_game
+        user = User.find_by(user_name: @exist.user_name)
+        user.destroy
+        puts "Your account has been deleted".green
+        puts "GOODBYE"
+    end
+
+    def my_account
+        prompt.select("Select One Option".underline) do |menu|
+            menu.choice 'View My Account', -> { view_account }
+            menu.choice 'Update My Account', -> { update_account }
+            menu.choice 'Delete My Account', -> { delete_account }
+        end
+        prompt.keypress("Press ENTER to go back to the main menu".underline, keys: [:return])  
+        menu
+    end
+
+    def menu
+        system "clear"
+        puts "MAIN MENU".bold
+        prompt.select("Select One Option".underline) do |menu|
+            menu.choice 'MY ACCOUNT', -> { my_account }
+            menu.choice 'PLAY GAME', -> { game }
+            menu.choice 'QUIT GAME', -> { quit_game }
+        end
     end
 
     def quit_game
-        puts "goodbye Thank You for playing!"
-    end
-
-    # MENU
-    # PLAY GAME press1 --> method outputs question
-    # ACCOUNT press2 --> method shows account detailes OPTIONS C-R-U-D
-    # QUIT press3 --> quit program
-
-    def menu
-        puts "GAME MENU"
-        puts "press 1 to view account info"
-        puts "press 2 to update account info"
-        puts "press 3 to start the game"
-        puts "press 4 to delete an account"
-        puts "press 5 to quit the game"
-        num = gets.chomp
-        if num == "1"
-            view_account
-        elsif num == "2" 
-            update_account
-        elsif num == "3" 
-            game
-        elsif num == "4" 
-            delete_account
-        elsif num == "5"
-            quit_game
-        end
+        system "clear"
+        puts "WE HOPE TO SEE YOU AGAIN SOON!".bold
+        puts "........... GOODBYE ...........".bold
+        puts "...............................".bold
     end
     
     def question
         @correct = nil
-        @wrong = nil
+        @incorrect = nil
         question = Question.all
-        random_question = question.sample
-        puts random_question.question
+        random = question.sample
+        puts random.question
         user_answer = gets.chomp
-        answer = random_question.answer
-        # need a conditioal statement to check on 
-        # answer with no input or answer with
-        # weird text
+        answer = random.answer
         if user_answer == answer
-            puts
-            puts "great job"
-            puts
+            puts "Good Job!".green
             @correct = true
         else
             puts
-            puts "try again"
-            puts random_question.hint
-            ans = gets.chomp
-            if ans == answer
-                puts "great job"
+            puts "Try Again!".red
+            puts random.hint
+            answer_2 = gets.chomp
+            if answer_2 == answer
+                puts "Great Job".green
                 @correct = true
             else
-                puts "that's not correct, let's move on to the next question!"
-                @wrong = false
+                puts "That's not correct! Let's move on to the next question!".red
+                @incorrect = false
             end
         end
-        var = Play.create(user_id: @user_account.id, question_id: random_question.id, correct_answer: @correct||@wrong)
+        plays = Play.create(user_id: @exist.id, question_id: random.id, correct_answer: @correct||@incorrect)
 
-        user = Play.where(user_id: @user_account.id)
+        play_user = Play.where(user_id: @exist.id)
         @correct_score = 0
-        @wrong_score = 0
-        user.select do |s|
-            if s.correct_answer == true
+        @incorrect_score = 0
+        play_user.select do |p|
+            if p.correct_answer == true
                 @correct_score += 1
-            elsif s.correct_answer == false
-                @wrong_score += 1
+            elsif p.correct_answer == false
+                @incorrect_score += 1
             end
         end
     end
@@ -131,21 +167,15 @@ class CommandLineInterface
         i = 0
         5.times do
             i += 1
-            puts "Question number: #{i}"
+            puts "Question Number: #{i}".blue.on_light_cyan
             question
         end
-        puts "You did great"
-        puts "you got #{@wrong_score} wrong and #{@correct_score} right"
-        puts "If you want to start over"
-        puts "press: 1"
-        puts "to quit"
-        puts "press: 2"
-        num = gets.chomp
-        if num == "1"
-            menu
-        elsif num == "2"
-            quit_game
-        end
+        puts "\nYou did great!".magenta.bold
+        puts
+        puts "You got #{@correct_score} correct, and #{@incorrect_score} incorrect.".light_blue.on_light_green
+        puts "\nKEEP UP THE GOOD WORK!\n".magenta.bold
+        prompt.keypress("Press ENTER to go back to the main menu".underline, keys: [:return])
+        menu
     end
 
 end

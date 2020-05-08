@@ -1,37 +1,17 @@
-# Module One Final Project Guidelines
+# Module One Final Project ** Little Math Lab **
 
-Congratulations, you're at the end of module one! You've worked crazy hard to get here and have learned a ton.
 
-For your final project, we'll be building a Command Line database application.
 
-## Project Requirements
 
-### Option One - Data Analytics Project
 
-1. Access a Sqlite3 Database using ActiveRecord.
-2. You should have at minimum three models including one join model. This means you must have a many-to-many relationship.
-3. You should seed your database using data that you collect either from a CSV, a website by scraping, or an API.
-4. Your models should have methods that answer interesting questions about the data. For example, if you've collected info about movie reviews, what is the most popular movie? What movie has the most reviews?
-5. You should provide a CLI to display the return values of your interesting methods.  
-6. Use good OO design patterns. You should have separate classes for your models and CLI interface.
+### Brief description of Little Math Lab
 
-  **Resource:** [Easy Access APIs](https://github.com/learn-co-curriculum/easy-access-apis)
+1. Has we were put together as a team, we found common ground quickly beause of the fact of beign parents. 
+2. This project idea helps fix present personal problems like preparing our child for preschool, where they will be tested for reading and basic math.
+3. Little Math lab is designed to be friendly and engaging to children.
+4. This lab is also designed to be improved, to add more dificult questions as the child grows
+5. Or add questions of a diferent nature, example: reading and writing.
 
-### Option Two - Command Line CRUD App
-
-1. Access a Sqlite3 Database using ActiveRecord.
-2. You should have a minimum of three models.
-3. You should build out a CLI to give your user full CRUD ability for at least one of your resources. For example, build out a command line To-Do list. A user should be able to create a new to-do, see all todos, update a todo item, and delete a todo. Todos can be grouped into categories, so that a to-do has many categories and categories have many to-dos.
-4. Use good OO design patterns. You should have separate classes for your models and CLI interface.
-
-### Brainstorming and Proposing a Project Idea
-
-Projects need to be approved prior to launching into them, so take some time to brainstorm project options that will fulfill the requirements above.  You must have a minimum of four [user stories](https://en.wikipedia.org/wiki/User_story) to help explain how a user will interact with your app.  A user story should follow the general structure of `"As a <role>, I want <goal/desire> so that <benefit>"`. In example, if we were creating an app to randomly choose nearby restaurants on Yelp, we might write:
-
-* As a user, I want to be able to enter my name to retrieve my records
-* As a user, I want to enter a location and be given a random nearby restaurant suggestion
-* As a user, I should be able to reject a suggestion and not see that restaurant suggestion again
-* As a user, I want to be able to save to and retrieve a list of favorite restaurant suggestions
 
 ## Instructions
 
@@ -50,6 +30,9 @@ Projects need to be approved prior to launching into them, so take some time to 
       - Present any code you would like to highlight.   
 7. *OPTIONAL, BUT RECOMMENDED*: Write a blog post about the project and process.
 
+### Conclusion
+1. Mod 1 project has not only helped us leave our protective shell of runing learn tests during our labs and taught us to code and build a fully fleshed project on our own. This project 
+
 ---
 ### Common Questions:
 - How do I turn off my SQL logger?
@@ -57,3 +40,5 @@ Projects need to be approved prior to launching into them, so take some time to 
 # in config/environment.rb add this line:
 ActiveRecord::Base.logger = nil
 ```
+
+with a short description, install instructions, a contributors guide and a link to the license for your code.
