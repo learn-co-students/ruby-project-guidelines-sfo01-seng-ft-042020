@@ -66,16 +66,16 @@
 #         menu
 #     end
 
-#     def update_account
-#         puts "What is your current username?"
-#         user_name = gets.chomp
-#         puts "What username you want to change to"
-#         new_user_name = gets.chomp
-#         user = User.find_by(user_name: user_name)
-#         user.update(user_name: new_user_name)  
-#         puts "You have changed your username to #{new_user_name}"
-#         menu
-#     end
+    # def update_account
+    #     puts "What is your current username?"
+    #     user_name = gets.chomp
+    #     puts "What username you want to change to"
+    #     new_user_name = gets.chomp
+    #     user = User.find_by(user_name: user_name)
+    #     user.update(user_name: new_user_name)  
+    #     puts "You have changed your username to #{new_user_name}"
+    #     menu
+    # end
 
 #     def delete_account
 #         user = User.all
